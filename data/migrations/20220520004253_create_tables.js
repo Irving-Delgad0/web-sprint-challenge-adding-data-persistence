@@ -7,7 +7,7 @@ exports.up = async function(knex) {
         tbl.increments('project_id')
         tbl.varchar('project_name').notNullable()    
         tbl.varchar('project_description')
-        tbl.boolean('project_completed')
+        tbl.boolean('project_completed').defaultTo('false')
     })
     await knex.schema.createTable('resources', tbl => {
         tbl.increments('resource_id')
