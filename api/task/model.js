@@ -1,18 +1,25 @@
 // build your `Task` model here
 const db = require('../../data/dbConfig')
 
-function getAll() {
-    return db('tasks')
+async function getAll() {
+    const rows = await db('tasks')
     .leftJoin('projects', 'tasks.project_id', 'projects.project_id')
-    .select('tasks.*', 'project_name', 'project_description')
+    .select('task_id', 'task_description', 'task_notes', 'task_completed', 'project_name', 'project_description')
+
+   return rows.map(row => row.task_completed === 0
+        ? {...row, task_completed: false}
+        : {...row, task_completed: true})
 }
 
-function getById(id) {
-    return db('tasks').where('resource_id', id).first()
+async function getById(id) {
+    const row = await db('tasks').where('task_id', id).first()
+    return row.task_completed === 0
+        ? {...row, task_completed: false}
+        : {...row, task_completed: true}
 }
 
-async function create(resource) {
-    const [id] = await db('tasks').insert(resource)
+async function create(task) {
+    const [id] = await db('tasks').insert(task)
     return getById(id)
 }
 

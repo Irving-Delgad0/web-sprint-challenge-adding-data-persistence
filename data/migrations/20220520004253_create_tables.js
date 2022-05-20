@@ -19,7 +19,7 @@ exports.up = async function(knex) {
         tbl.increments('task_id')
         tbl.varchar('task_description').notNullable()    
         tbl.varchar('task_notes')
-        tbl.boolean('task_completed')
+        tbl.boolean('task_completed').defaultTo('false')
         tbl.integer('project_id')
         .unsigned()
         .notNullable()

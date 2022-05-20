@@ -12,5 +12,14 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+router.post('/', (req, res, next) => {
+    const task = req.body
+    Tasks.create(task)
+    .then(result => {
+        res.json(result)
+    })
+    .catch(next)
+})
+
 
 module.exports = router
